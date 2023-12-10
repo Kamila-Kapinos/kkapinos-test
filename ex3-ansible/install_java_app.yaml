@@ -42,7 +42,34 @@
       daemon-reload: yes
 
 - hosts: db_nodes
+  become: yes
+  vars:
+    my_favourite_software:
+      - cowsay
+    must_have_soft:
+      - MariaDB-server
+      - MariaDB-client
   tasks:
+    - name: "Put my repo config to Mariadb repo"
+      template:
+        src: templates/mariadb.repo.j2
+        dest: "/etc/yum.repos.d/Mariadb.repo"
+    - name: Install MariaDB Server and Client
+      dnf:
+        name: "{{ must_have_soft }}"
+        state: latest
+    - name: Start and enable MariaDB service
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
+    - name: "install my favourite software"
+      dnf: 
+        name: "{{ my_favourite_software }}"
+        state: latest
+
+
+
   
 
   
