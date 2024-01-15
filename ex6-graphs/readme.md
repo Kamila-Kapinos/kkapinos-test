@@ -1,5 +1,6 @@
 18.184.100.115
 1. docker
+
 sudo dnf install -y docker
 sudo systemctl start docker
  
